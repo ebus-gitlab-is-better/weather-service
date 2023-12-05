@@ -1,0 +1,62 @@
+basePath: /
+definitions:
+  biz.WeaterResponse:
+    properties:
+      temp:
+        type: number
+      weather:
+        $ref: '#/definitions/biz.WeatherData'
+    type: object
+  biz.WeatherData:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+host: weather.e-bus.site
+info:
+  contact:
+    email: suro@hyneo.ru
+    name: Suro
+    url: https://t.me/suronek
+  description: This is documentation api for backend
+  title: Weather Service Swagger API
+  version: "1.0"
+paths:
+  /weather/{coordinates}/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: '[{longitude},{latitude}]'
+        in: path
+        name: coordinate
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/biz.WeaterResponse'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Get Weather
+      tags:
+      - map
+securityDefinitions:
+  authorization:
+    in: header
+    name: authorization
+    type: apiKey
+swagger: "2.0"

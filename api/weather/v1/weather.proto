@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package api.weather.v1;
+
+option go_package = "weather-service/api/weather/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.weather.v1";
+
+service Weather {
+	rpc GetWeather (GetWeatherRequest) returns (GetWeatherReply);
+}
+message GetWeatherRequest {
+	float lat = 1;
+	float lon = 2;
+}
+message GetWeatherReply {
+	message Data {
+		string name = 1;
+		string description = 2;
+	}
+	Data data = 1;
+	float temperature = 2;
+}

@@ -1,0 +1,94 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is documentation api for backend",
+        "title": "Weather Service Swagger API",
+        "contact": {
+            "name": "Suro",
+            "url": "https://t.me/suronek",
+            "email": "suro@hyneo.ru"
+        },
+        "version": "1.0"
+    },
+    "host": "weather.e-bus.site",
+    "basePath": "/",
+    "paths": {
+        "/weather/{coordinates}/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "map"
+                ],
+                "summary": "Get Weather",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "[{longitude},{latitude}]",
+                        "name": "coordinate",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/biz.WeaterResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "biz.WeaterResponse": {
+            "type": "object",
+            "properties": {
+                "temp": {
+                    "type": "number"
+                },
+                "weather": {
+                    "$ref": "#/definitions/biz.WeatherData"
+                }
+            }
+        },
+        "biz.WeatherData": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "authorization": {
+            "type": "apiKey",
+            "name": "authorization",
+            "in": "header"
+        }
+    }
+}

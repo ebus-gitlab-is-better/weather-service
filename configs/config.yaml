@@ -7,8 +7,17 @@ server:
     timeout: 1s
 data:
   database:
-    driver: mysql
-    source: root:root@tcp(127.0.0.1:3306)/test
+    host: ${DB_HOST}
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}
+    database: ${DB_DATABASE}
+    port: ${DB_PORT}
+  keycloak:
+    hostname: ${KC_HOST}
+    client_id: "${KC_CLIENT}"
+    client_secret: "${KC_SECRET}"
+    realm: ${KC_REALM}
+  api: ${API_KEY}
   redis:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s

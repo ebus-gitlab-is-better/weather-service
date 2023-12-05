@@ -7,30 +7,37 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"weather-service/internal/biz"
 	"weather-service/internal/conf"
 	"weather-service/internal/data"
 	"weather-service/internal/server"
 	"weather-service/internal/service"
+)
 
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
+import (
+	_ "go.uber.org/automaxprocs"
 )
 
 // Injectors from wire.go:
 
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
-	dataData, cleanup, err := data.NewData(confData, logger)
+	db := data.NewDB(confData)
+	goCloak := data.NewKeycloak(confData)
+	keycloakAPI := data.NewKeyCloakAPI(confData, goCloak, logger)
+	dataData, cleanup, err := data.NewData(confData, logger, db, keycloakAPI)
 	if err != nil {
 		return nil, nil, err
 	}
-	greeterRepo := data.NewGreeterRepo(dataData, logger)
-	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
-	greeterService := service.NewGreeterService(greeterUsecase)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
-	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
-	app := newApp(logger, grpcServer, httpServer)
+	weatherRepo := data.NewWeatherRepo(dataData, logger)
+	weatherUseCase := biz.NewWeatherUseCase(weatherRepo, logger)
+	weatherService := service.NewWeatherService(weatherUseCase)
+	grpcServer := server.NewGRPCServer(confServer, weatherService, logger)
+	httpServer := server.NewHTTPServer(confServer, keycloakAPI, weatherUseCase, logger)
+	parser := server.NewParser(confData, weatherUseCase)
+	app := newApp(logger, grpcServer, httpServer, parser)
 	return app, func() {
 		cleanup()
 	}, nil
