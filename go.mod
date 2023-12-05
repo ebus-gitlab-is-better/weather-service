@@ -1,8 +1,6 @@
 module weather-service
 
-go 1.21
-
-toolchain go1.21.3
+go 1.19
 
 require (
 	github.com/gin-gonic/gin v1.9.1
@@ -10,6 +8,7 @@ require (
 	github.com/go-kratos/kratos/v2 v2.7.0
 	github.com/google/wire v0.5.0
 	github.com/swaggo/gin-swagger v1.6.0
+	github.com/swaggo/swag v1.16.2
 	go.uber.org/automaxprocs v1.5.1
 	google.golang.org/grpc v1.56.1
 	google.golang.org/protobuf v1.31.0
@@ -53,7 +52,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/segmentio/ksuid v1.0.4 // indirect
-	github.com/swaggo/swag v1.16.2 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
